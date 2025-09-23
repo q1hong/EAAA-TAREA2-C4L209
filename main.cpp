@@ -121,7 +121,6 @@ class Chasis : public Componente{
 	private:
 		string material;
 		double peso;
-		double costo;
 	public:
 		Chasis(int id, string material, double peso, double costo) : Componente(id, costo, "CHASIS"){
 			this->material = material;
