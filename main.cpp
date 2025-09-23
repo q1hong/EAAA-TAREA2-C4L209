@@ -157,6 +157,7 @@ class Manillar : public Componente{
 class ICompetidor{
 	public:
 		virtual double calcularPuntuacionRendimiento() const = 0;
+		virtual ~ICompetidor(){}
 };
 
 // Base
