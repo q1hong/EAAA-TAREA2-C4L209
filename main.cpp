@@ -95,20 +95,69 @@ class Transmision : public Componente{
 
 // Componentes exclusivos
 class Aleron : public Componente{
+	private:
+		string material;
+		string tamano;
+		double downforce;
+	public:
+		Aleron(int id, string material, string tamano, double downforce, double costo) : Componente(id, costo, "ALERON"){
+			this->material = material;
+			this->tamano = tamano;
+			this->downforce = downforce;
+		}
+	string getMaterial() const {
+		return material;
+	}
+	string getTamano() const{
+		return tamano;
+	}
+	double getDownforce() const {
+		return downforce;
+	}
 
-};
+};	
 
 class Chasis : public Componente{
-
+	private:
+		string material;
+		double peso;
+		double costo;
+	public:
+		Chasis(int id, string material, double peso, double costo) : Componente(id, costo, "CHASIS"){
+			this->material = material;
+			this->peso = peso;
+		}
+	// Getters
+    string getMaterial() const {
+        return material;
+    }
+    
+    double getPeso() const {
+        return peso;
+    }
 };
 
 class Manillar : public Componente{
-
+	private:
+		string material;
+		string tipo; // Crucero o Deportivo, no es el mismo que el de Componente()
+	public:
+		Manillar(int id, string material, string tipo, double costo) : Componente(id, costo, "MANILLAR"){
+			this->material = material;
+			this->tipo = tipo;
+		}
+	string getTipo() const {
+		return tipo;
+	}
+    string getMaterial() const {
+        return material;
+    }	
 };
 
 // Interfaz para competidores
 class ICompetidor{
-
+	public:
+		virtual double calcularPuntuacionRendimiento() const = 0;
 };
 
 // Base
