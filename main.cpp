@@ -190,9 +190,6 @@ class Automovil : public Vehiculo{
 };
 
 // Vehiculos derivados
-class Deportivo : public Automovil, public ICompetidor{
-
-};
 
 class Sedan : public Automovil{
 
@@ -202,6 +199,39 @@ class Camioneta : public Vehiculo{
 
 };
 
+class Deportivo : public Automovil, public ICompetidor{
+	private:
+		Aleron* aleron;
+	public:
+		Deportivo(int id, string marca, string modelo) : Automovil(id, marca, modelo){
+			this->aleron = nullptr;
+		}
+	double calcularPuntuacionRendimiento() const override {
+		// por implementar
+		return 0.0;
+	}
+	void setAleron(Aleron* a){
+		aleron = a;
+	}
+	Aleron* getAleron() const {
+		return aleron;
+	}
+};
+
 class Motocicleta : public Vehiculo, public ICompetidor{
+	private:
+		Chasis* chasis;
+		Manillar* manillar;
+
+	public:
+		Motocicleta(int id, string marca, string modelo) : Vehiculo(id, marca, modelo) {
+			this->chasis = nullptr;
+			this->manillar = nullptr;
+		}
+		double calcularPuntuacionRendimiento() const override {
+			// por implementar
+			return 0.0;
+		}
+		// Setters y getters por implementar
 
 };
