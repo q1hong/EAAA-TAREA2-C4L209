@@ -7,7 +7,27 @@ int main(){
 }
 // Base
 class Componente { 
-	
+	private:
+		int id;
+		double costo;
+	public:
+		Componente(int id, double costo){
+			this->id = id;
+			this->costo = costo;
+		}
+		int getID(){
+			return id;
+		}
+		double getCosto(){
+			return costo;
+		}
+		void setID(int id_nuevo){
+			id = id_nuevo;
+		}
+		void setCosto(double costo_nuevo){
+			costo = costo_nuevo;
+		}
+
 };
 
 class Motor : public Componente{
