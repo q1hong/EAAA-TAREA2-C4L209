@@ -162,11 +162,31 @@ class ICompetidor{
 
 // Base
 class Vehiculo{
-
+	private:
+		int id;
+		string marca;
+		string modelo;
+		Motor* motor;
+		Llantas* llantas;
+	public:
+		Vehiculo(int id, string marca, string modelo){
+			this->id = id;
+			this->marca = marca;
+			this->modelo = modelo;
+			this->motor = nullptr;
+			this->llantas = nullptr;
+		}
 };
 
 class Automovil : public Vehiculo{
-
+	private:
+		Carroceria* carroceria;
+		Transmision* transmision;
+	public:
+		Automovil(int id, string marca, string modelo) : Vehiculo(id, marca, modelo){
+			this->carroceria = nullptr;
+			this->transmision = nullptr;
+		}
 };
 
 // Vehiculos derivados
