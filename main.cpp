@@ -176,6 +176,15 @@ class Vehiculo{
 			this->motor = nullptr;
 			this->llantas = nullptr;
 		}
+	int getID() const {
+	return id;
+	}
+	string getMarca() const{
+		return marca;
+	}
+	string getModelo() const{
+		return modelo;
+	}
 };
 
 class Automovil : public Vehiculo{
@@ -192,10 +201,17 @@ class Automovil : public Vehiculo{
 // Vehiculos derivados
 
 class Sedan : public Automovil{
+public:
+    Sedan(int id, string marca, string modelo): Automovil(id, marca, modelo) {}
 
+    void mostrarInfo() const {
+        cout << "[ID: " << getID() << "] Sedan - " << getMarca() << " " << getModelo() << endl;
+    }
 };
-
 class Camioneta : public Vehiculo{
+	private:
+
+	public:
 
 };
 
