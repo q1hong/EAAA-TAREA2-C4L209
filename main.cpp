@@ -1,15 +1,14 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <fstream>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
-int main(){
-
-	return 0;
-}
 // Base
 class Componente{
-private:
+protected:
 	int id;
 	double costo;
 	string tipo;
@@ -252,7 +251,7 @@ class Sedan : public Automovil{
 };
 
 class Camioneta : public Vehiculo{
-	protected:
+	private:
     	Carroceria* carroceria;
    		Transmision* transmision;
 	public:
@@ -361,3 +360,133 @@ class Motocicleta : public Vehiculo, public ICompetidor{
 	}
 
 };
+
+void cargarComponentesDesdeArchivo(const string& nombreArchivo, vector<Componente*>& componentes) {
+    ifstream archivo(nombreArchivo);
+    if (!archivo.is_open()) {
+        cout << "Error: No se pudo abrir el archivo " << nombreArchivo << endl;
+        return;
+    }
+    
+    string linea;
+    while (getline(archivo, linea)) {
+        // Usar stringstream para dividir la línea por comillas
+        stringstream ss(linea);
+        string token;
+        vector<string> tokens;
+        
+        // Dividir la línea usando comillas como delimitador
+        while (getline(ss, token, '"')) {
+            if (!token.empty() && token != "\n") {
+                tokens.push_back(token);
+            }
+        }
+        
+        // Verificar que tenemos al menos 2 tokens (ID y TIPO)
+        if (tokens.size() < 2) {
+            cout << "Línea ignorada (formato inválido): " << linea << endl;
+            continue;
+        }
+        
+        int id = stoi(tokens[0]);  // Convertir ID a entero
+        string tipo = tokens[1];    // Tipo de componente
+        
+        // Crear el componente según su tipo
+        if (tipo == "MOTOR") {
+            // Formato: ID"MOTOR"tipoVehiculo"tipo"cilindrada"potencia"costo
+            if (tokens.size() >= 7) {
+                string tipoVehiculo = tokens[2];
+                string tipoMotor = tokens[3];
+                string cilindrada = tokens[4];
+                int potencia = stoi(tokens[5]);  // Convertir a int
+                double costo = stod(tokens[6]);  // Convertir a double
+                
+                componentes.push_back(new Motor(id, tipoVehiculo, tipoMotor, cilindrada, potencia, costo));
+            }
+        }
+        else if (tipo == "LLANTAS") {
+            // Formato: ID"LLANTAS"tipo"tamaño"perfil"costo
+            if (tokens.size() >= 6) {
+                string tipoLlantas = tokens[2];
+                string tamaño = tokens[3];
+                string perfil = tokens[4];
+                double costo = stod(tokens[5]);
+                
+                componentes.push_back(new Llantas(id, tipoLlantas, tamaño, perfil, costo));
+            }
+        }
+        else if (tipo == "CARROCERIA") {
+            // Formato: ID"CARROCERIA"tipo"color"numeroPuertas"costo
+            if (tokens.size() >= 6) {
+                string tipoCarroceria = tokens[2];
+                string color = tokens[3];
+                int puertas = stoi(tokens[4]);
+                double costo = stod(tokens[5]);
+                
+                componentes.push_back(new Carroceria(id, tipoCarroceria, color, puertas, costo));
+            }
+        }
+        else if (tipo == "TRANSMISION") {
+            // Formato: ID"TRANSMISION"tipo"velocidades"costo
+            if (tokens.size() >= 5) {
+                string tipoTransmision = tokens[2];
+                int velocidades = stoi(tokens[3]);
+                double costo = stod(tokens[4]);
+                
+                componentes.push_back(new Transmision(id, tipoTransmision, velocidades, costo));
+            }
+        }
+        else if (tipo == "ALERON") {
+            // Formato: ID"ALERON"material"tamaño"downforce"costo
+            if (tokens.size() >= 6) {
+                string material = tokens[2];
+                string tamaño = tokens[3];
+                double downforce = stod(tokens[4]);
+                double costo = stod(tokens[5]);
+                
+                componentes.push_back(new Aleron(id, material, tamaño, downforce, costo));
+            }
+        }
+        else if (tipo == "CHASIS") {
+            // Formato: ID"CHASIS"material"peso"costo
+            if (tokens.size() >= 5) {
+                string material = tokens[2];
+                double peso = stod(tokens[3]);
+                double costo = stod(tokens[4]);
+                
+                componentes.push_back(new Chasis(id, material, peso, costo));
+            }
+        }
+        else if (tipo == "MANILLAR") {
+            // Formato: ID"MANILLAR"tipo"material"costo
+            if (tokens.size() >= 5) {
+                string tipoManillar = tokens[2];
+                string material = tokens[3];
+                double costo = stod(tokens[4]);
+                
+                componentes.push_back(new Manillar(id, material, tipoManillar, costo));
+            }
+        }
+        else {
+            cout << "Tipo de componente desconocido: " << tipo << endl;
+        }
+    }
+    
+    archivo.close();
+    cout << "funcionaAAA" << endl;
+}
+
+int main() {
+    srand(time(0));
+    
+    vector<Componente*> componentes;
+
+    cargarComponentesDesdeArchivo("componentes.txt", componentes);
+    
+    for (Componente* comp : componentes) {
+        delete comp;
+    }
+    componentes.clear();
+    
+    return 0;
+}
