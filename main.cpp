@@ -185,6 +185,18 @@ class Vehiculo{
 	string getModelo() const{
 		return modelo;
 	}
+	Motor* getMotor() const {
+		return motor;
+	}
+	Llantas *getLlantas(){
+		return llantas;
+	}
+	void setMotor(Motor* m){
+		motor = m;
+	}
+	void setLlantas(Llantas* l){
+		llantas = l;
+	}
 };
 
 class Automovil : public Vehiculo{
@@ -196,23 +208,42 @@ class Automovil : public Vehiculo{
 			this->carroceria = nullptr;
 			this->transmision = nullptr;
 		}
+		Carroceria* getCarroceria() const {
+			return carroceria;
+		}
+		Transmision* getTransmision() const{
+			return transmision;
+		}
+		void setCarroceria(Carroceria* c){
+			carroceria = c;
+		}
+		void setTransmision(Transmision* t){
+			transmision = t;
+		}
 };
 
 // Vehiculos derivados
 
 class Sedan : public Automovil{
-public:
-    Sedan(int id, string marca, string modelo): Automovil(id, marca, modelo) {}
-
-    void mostrarInfo() const {
-        cout << "[ID: " << getID() << "] Sedan - " << getMarca() << " " << getModelo() << endl;
-    }
+	public:
+    	Sedan(int id, string marca, string modelo): Automovil(id, marca, modelo) {}
 };
+
 class Camioneta : public Vehiculo{
 	private:
-
+    	Carroceria* carroceria;
+   		Transmision* transmision;
 	public:
-
+    	Camioneta(int id, string marca, string modelo) : Vehiculo(id, marca, modelo){
+        	this->carroceria = nullptr;
+        	this->transmision = nullptr;
+   		}
+    
+    	Carroceria* getCarroceria() const { return carroceria; }
+    	Transmision* getTransmision() const { return transmision; }
+    
+    	void setCarroceria(Carroceria* c) { carroceria = c; }
+    	void setTransmision(Transmision* t) { transmision = t; }
 };
 
 class Deportivo : public Automovil, public ICompetidor{
@@ -248,6 +279,10 @@ class Motocicleta : public Vehiculo, public ICompetidor{
 			// por implementar
 			return 0.0;
 		}
-		// Setters y getters por implementar
-
+	Chasis* getChasis() const{
+		return chasis;
+	}
+	Manillar* getManillar() const { 
+		return manillar;
+	}
 };
