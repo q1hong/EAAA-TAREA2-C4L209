@@ -70,7 +70,14 @@ class Llantas : public Componente{
 			this-> tamano = tamano;
 			this-> perfil = perfil;
 		}
-};
+	double getTamano() const{
+		return tamano;
+	}
+	string getPerfil() const{
+		return perfil;
+	}
+
+};	
 
 class Carroceria : public Componente{
 	private:
@@ -188,7 +195,7 @@ class Vehiculo{
 	Motor* getMotor() const {
 		return motor;
 	}
-	Llantas *getLlantas(){
+	Llantas *getLlantas() const{
 		return llantas;
 	}
 	void setMotor(Motor* m){
@@ -254,8 +261,23 @@ class Deportivo : public Automovil, public ICompetidor{
 			this->aleron = nullptr;
 		}
 	double calcularPuntuacionRendimiento() const override {
-		// por implementar
-		return 0.0;
+		double potenciaHP = getMotor()->getPotencia();
+		double downforceAleron = aleron->getDownforce();
+		string tipoLlantas = getLlantas()->getTipo();
+
+		double bonusLlantas = 0.0;
+		
+		if(tipoLlantas == "Deportivas"){
+			bonusLlantas = 50;
+		}
+		else{
+			bonusLlantas = 10;
+		};
+		double factorX = (rand()%11)-5;
+		double puntuacion_base = (potenciaHP*0.5)+bonusLlantas+(downforceAleron*1.5);
+		double puntuacion_final = puntuacion_base + (puntuacion_base*factorX/100.0);
+
+		return puntuacion_final;
 	}
 	void setAleron(Aleron* a){
 		aleron = a;
@@ -276,8 +298,25 @@ class Motocicleta : public Vehiculo, public ICompetidor{
 			this->manillar = nullptr;
 		}
 		double calcularPuntuacionRendimiento() const override {
-			// por implementar
-			return 0.0;
+
+			double potenciaHP = getMotor()->getPotencia();
+			double pesoChasis = getChasis()->getPeso();
+			string tipoManillar = getManillar()->getTipo();
+
+			double bonusManillar = 0.0;
+			double factorX = (rand()%11)-5;
+
+			if (tipoManillar=="Deportivo"){
+				bonusManillar = 40;
+			}
+			else{
+				bonusManillar = 15;
+			}
+
+			double puntuacion_base = (potenciaHP/pesoChasis)*50+(bonusManillar);
+			double puntuacion_final = puntuacion_base + (puntuacion_base*factorX/100.0);
+			
+			return puntuacion_final;
 		}
 	Chasis* getChasis() const{
 		return chasis;
@@ -285,4 +324,5 @@ class Motocicleta : public Vehiculo, public ICompetidor{
 	Manillar* getManillar() const { 
 		return manillar;
 	}
+
 };
