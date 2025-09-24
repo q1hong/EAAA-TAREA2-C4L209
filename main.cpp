@@ -20,6 +20,8 @@ public:
 		this->costo = costo;
 		this->tipo = tipo;
 	}
+	virtual ~Componente(){}
+
 	int getID() const{
 		return id;
 	}
@@ -63,14 +65,14 @@ public:
 
 class Llantas : public Componente{
 	private:
-		double tamano;
+		string tamano;
 		string perfil;
 	public:
-		Llantas(int id, string tipo, double tamano, string perfil, double costo) : Componente(id, costo, tipo){
+		Llantas(int id, string tipo, string tamano, string perfil, double costo) : Componente(id, costo, tipo){
 			this-> tamano = tamano;
 			this-> perfil = perfil;
 		}
-	double getTamano() const{
+	string getTamano() const{
 		return tamano;
 	}
 	string getPerfil() const{
@@ -89,6 +91,12 @@ class Carroceria : public Componente{
 			this->color = color;
 			this->numeroPuertas = numeroPuertas;
 		}
+		string getColor() const{
+			return color;
+		}
+		int getNumeroPuertas() const{
+			return numeroPuertas;
+		}
 	};
 
 class Transmision : public Componente{
@@ -97,6 +105,9 @@ class Transmision : public Componente{
 	public:
 		Transmision(int id, string tipo, int velocidades, double costo) : Componente(id, costo, tipo){
 			this->velocidades = velocidades;
+		}
+		int getVelocidades() const{
+			return velocidades;
 		}
 };
 
@@ -169,7 +180,7 @@ class ICompetidor{
 
 // Base
 class Vehiculo{
-	private:
+	protected:
 		int id;
 		string marca;
 		string modelo;
@@ -182,6 +193,10 @@ class Vehiculo{
 			this->modelo = modelo;
 			this->motor = nullptr;
 			this->llantas = nullptr;
+		}
+		virtual ~Vehiculo(){
+			delete motor;
+			delete llantas;
 		}
 	int getID() const {
 	return id;
@@ -233,11 +248,11 @@ class Automovil : public Vehiculo{
 
 class Sedan : public Automovil{
 	public:
-    	Sedan(int id, string marca, string modelo): Automovil(id, marca, modelo) {}
+    	Sedan(int id, string marca, string modelo) : Automovil(id, marca, modelo) {}
 };
 
 class Camioneta : public Vehiculo{
-	private:
+	protected:
     	Carroceria* carroceria;
    		Transmision* transmision;
 	public:
@@ -260,7 +275,15 @@ class Deportivo : public Automovil, public ICompetidor{
 		Deportivo(int id, string marca, string modelo) : Automovil(id, marca, modelo){
 			this->aleron = nullptr;
 		}
+		virtual ~Deportivo(){
+			delete aleron;
+		}
+
 	double calcularPuntuacionRendimiento() const override {
+		if(!getMotor() || !getLlantas() || !aleron){
+			return 0.0;
+		}
+		
 		double potenciaHP = getMotor()->getPotencia();
 		double downforceAleron = aleron->getDownforce();
 		string tipoLlantas = getLlantas()->getTipo();
@@ -297,8 +320,14 @@ class Motocicleta : public Vehiculo, public ICompetidor{
 			this->chasis = nullptr;
 			this->manillar = nullptr;
 		}
+		virtual ~Motocicleta(){
+			delete chasis;
+			delete manillar;
+		}
 		double calcularPuntuacionRendimiento() const override {
-
+			if (!getMotor() || !chasis || !manillar){
+				return 0.0;
+			}
 			double potenciaHP = getMotor()->getPotencia();
 			double pesoChasis = getChasis()->getPeso();
 			string tipoManillar = getManillar()->getTipo();
@@ -323,6 +352,12 @@ class Motocicleta : public Vehiculo, public ICompetidor{
 	}
 	Manillar* getManillar() const { 
 		return manillar;
+	}
+	void setChasis(Chasis* c){
+		chasis = c;
+	}
+	void setManillar(Manillar* m){
+		manillar = m;
 	}
 
 };
