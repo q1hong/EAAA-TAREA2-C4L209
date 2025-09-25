@@ -238,10 +238,6 @@ class Automovil : public Vehiculo{
 		void setTransmision(Transmision* t){
 			transmision = t;
 		}
-		~Automovil(){
-    	delete carroceria;
-    	delete transmision;
-	}
 };
 
 // Vehiculos derivados
@@ -256,10 +252,6 @@ class Camioneta : public Vehiculo{
     	Carroceria* carroceria;
    		Transmision* transmision;
 	public:
-		~Camioneta(){
-			delete carroceria;
-			delete transmision;
-		}
     	Camioneta(int id, string marca, string modelo) : Vehiculo(id, marca, modelo){
         	this->carroceria = nullptr;
         	this->transmision = nullptr;
@@ -324,28 +316,29 @@ class Motocicleta : public Vehiculo, public ICompetidor{
 		}
 		virtual ~Motocicleta(){}
 		double calcularPuntuacionRendimiento() const override {
-			if (!getMotor() || !chasis || !manillar){
-				return 0.0;
-			}
-			double potenciaHP = getMotor()->getPotencia();
-			double pesoChasis = getChasis()->getPeso();
-			string tipoManillar = getManillar()->getTipo();
+            if (!getMotor() || !chasis || !manillar){
+                return 0.0;
+            }
+    
+            double potenciaHP = getMotor()->getPotencia();
+            double pesoChasis = chasis->getPeso();  // ✅ Usar atributo directo
+            string tipoManillar = manillar->getTipo();  // ✅ Usar atributo directo
 
-			double bonusManillar = 0.0;
-			double factorX = (rand()%11)-5;
+            double bonusManillar = 0.0;
+            double factorX = (rand() % 11) - 5;  // -5 a +5
 
-			if (tipoManillar=="Deportivo"){
-				bonusManillar = 40;
-			}
-			else{
-				bonusManillar = 15;
-			}
+            if (tipoManillar == "Deportivo") {
+            bonusManillar = 40;
+            } 
+            else {
+            bonusManillar = 15;
+        }
 
-			double puntuacion_base = (potenciaHP/pesoChasis)*50+(bonusManillar);
-			double puntuacion_final = puntuacion_base + (puntuacion_base*factorX/100.0);
-			
-			return puntuacion_final;
-		}
+            double puntuacion_base = (potenciaHP / pesoChasis) * 50 + bonusManillar;
+            double puntuacion_final = puntuacion_base + (puntuacion_base * factorX / 100.0);
+    
+            return puntuacion_final;
+        }
 	Chasis* getChasis() const{
 		return chasis;
 	}
@@ -997,7 +990,7 @@ int main() {
     do {
         mostrarMenu();
         cin >> opcion;
-        cin.ignore(); // Limpiar buffer
+        cin.ignore();
         
         switch (opcion) {
             case 1:
@@ -1023,16 +1016,15 @@ int main() {
         }
     } while (opcion != 6);
 
-    // Liberar memoria
-    for (Vehiculo* v : inventario) {
-        delete v;
-    }
-    inventario.clear();
-    
     for (Componente* comp : componentes) {
         delete comp;
     }
     componentes.clear();
+    
+    for (Vehiculo* v : inventario) {
+        delete v;
+    }
+    inventario.clear();
     
     return 0;
 }
