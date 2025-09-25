@@ -1,7 +1,10 @@
-1~MOTOR~Auto~Gasolina~2000cc~150hp~800
-2~MOTOR~Auto~Electrico~N/A~500hp~2500
-3~MOTOR~Moto~Gasolina~1000cc~205hp~3200
-1~LLANTAS~Deportivas~18in~Bajo Perfil~600
-1~CARROCERIA~Sedan~Rojo~4 Puertas~1200
-1~ALERON~Fibra de Carbono~Grande~25kg~1500
-1~CHASIS~Aluminio~150kg~1800
+1"MOTOR"Auto"Gasolina"2000cc"150hp"800
+2"MOTOR"Auto"Electrico"N/A"500hp"2500
+3"MOTOR"Moto"Gasolina"1000cc"205hp"3200
+1"LLANTAS"Deportivas"18in"Bajo Perfil"600
+2"LLANTAS"Normales"16in"Standard"300
+1"CARROCERIA"Sedan"Rojo"4 Puertas"1200
+1"TRANSMISION"Manual"6"1200
+1"ALERON"Fibra de Carbono"Grande"25kg"1500
+1"CHASIS"Aluminio"150kg"1800
+1"MANILLAR"Deportivo"Aluminio"400
